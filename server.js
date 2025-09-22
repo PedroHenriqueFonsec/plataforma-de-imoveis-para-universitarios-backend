@@ -17,10 +17,12 @@ app.use(express.json());
 const usuarioRoute = require("./src/routes/UsuarioRoute");
 const imovelRoute = require("./src/routes/ImovelRoute");
 const aluguelRoute = require("./src/routes/AluguelRoute");
+const geocodeRoute = require("./src/routes/GeocodeRoute");
 
 app.use("/api/usuarios", usuarioRoute);
 app.use("/api/imoveis", imovelRoute);
 app.use("/api/alugueis", aluguelRoute);
+app.use("/api/geocode", geocodeRoute);
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
   console.log("MongoDB conectado com sucesso!");
