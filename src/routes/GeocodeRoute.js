@@ -1,16 +1,32 @@
-const express = require("express");
-const axios = require("axios");
+import express from "express";
+import axios from "axios";
+
 const router = express.Router();
 
-router.get("/:endereco", async (req, res) => {
-  const { endereco } = req.params;
+router.get("/geocode/:endereco", async (req, res) => {
   try {
+    const endereco = decodeURIComponent(req.params.endereco);
+
     const response = await axios.get("https://nominatim.openstreetmap.org/search", {
-      params: { q: endereco, format: "json" },
+      params: {
+        q: endereco,
+        format: "json",
+        limit: 1
+      },
+      headers: {
+        "User-Agent": "plataforma-de-imoveis"
+      }
     });
-    res.json(response.data);
+
+    if (response.data.length === 0) {
+      return res.status(404).json({ mensagem: "Endereço não encontrado." });
+    }
+
+    const { lat, lon } = response.data[0];
+    res.json({ lat, lon });
   } catch (err) {
-    res.status(500).json({ error: "Erro ao buscar geolocalização" });
+    console.error("Erro na rota /geocode:", err.message);
+    res.status(500).json({ mensagem: "Erro ao buscar coordenadas." });
   }
 });
 
