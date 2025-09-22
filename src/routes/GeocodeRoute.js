@@ -2,9 +2,13 @@ const express = require("express");
 const axios = require("axios");
 const router = express.Router();
 
-router.get("/geocode/:endereco", async (req, res) => {
+router.get("/geocode", async (req, res) => {
   try {
-    const endereco = decodeURIComponent(req.params.endereco);
+    const endereco = req.query.endereco;
+    if (!endereco) {
+      return res.status(400).json({ mensagem: "Endereço é obrigatório!" });
+    }
+
     console.log("Requisição recebida para /geocode com endereço:", endereco);
 
     const response = await axios.get("https://nominatim.openstreetmap.org/search", {
