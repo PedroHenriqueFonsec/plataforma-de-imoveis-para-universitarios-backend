@@ -29,4 +29,4 @@ router.get("/geocode/:endereco", async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;
