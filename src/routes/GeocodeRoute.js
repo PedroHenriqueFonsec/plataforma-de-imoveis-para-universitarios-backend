@@ -2,7 +2,7 @@ const express = require("express");
 const axios = require("axios");
 const router = express.Router();
 
-router.get("/geocode", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const endereco = req.query.endereco;
     if (!endereco) {
