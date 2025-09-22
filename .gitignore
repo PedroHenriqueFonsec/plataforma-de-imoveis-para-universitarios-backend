@@ -16,7 +16,7 @@ dist-ssr
 build/
 *.local
 
-# env files
+# Env files
 .env
 .env.*
 !.env.example

@@ -4,7 +4,8 @@ const router = express.Router();
 
 router.get("/geocode/:endereco", async (req, res) => {
   try {
-    const endereco = req.params.endereco;
+    const endereco = decodeURIComponent(req.params.endereco);
+    console.log("Requisição recebida para /geocode com endereço:", endereco);
 
     const response = await axios.get("https://nominatim.openstreetmap.org/search", {
       params: {
@@ -16,6 +17,8 @@ router.get("/geocode/:endereco", async (req, res) => {
         "User-Agent": "plataforma-de-imoveis/1.0"
       }
     });
+
+    console.log("Resposta do Nominatim:", response.data);
 
     if (!response.data || response.data.length === 0) {
       return res.status(404).json({ mensagem: "Endereço não encontrado!" });
