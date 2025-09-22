@@ -6,7 +6,13 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "https://plataforma-de-imoveis-para-universi.vercel.app/",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+}));
+app.options("*", cors());
 app.use(express.json());
 
 const usuarioRoute = require("./src/routes/UsuarioRoute");
@@ -19,7 +25,6 @@ app.use("/api/alugueis", aluguelRoute);
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
   console.log("MongoDB conectado com sucesso!");
-  app.listen(process.env.PORT, () =>
-    console.log(`Servidor rodando na porta ${process.env.PORT}`)
-  );
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
 }).catch((err) => console.error("Erro ao tentar conectar no MongoDB:", err));
